@@ -5,8 +5,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +28,7 @@ import java.util.logging.Logger;
 public class TcpHttp {
     /** Logger instance */
     private final static Logger log = Logger.getLogger(TcpHttp.class.getName());
-
+    
     /**
      * Main method for starting application
      * 
@@ -38,7 +41,8 @@ public class TcpHttp {
      */
     public static void main(String[] args) throws IOException, InterruptedException {
         log.log(Level.INFO, "Starting application...");
-        ExecutorService executor = Executors.newFixedThreadPool(30);
+        ExecutorService executor = Executors.newCachedThreadPool(Executors.defaultThreadFactory());
+        
         ServerSocket serverSocket = null;
         try {
             URI uri = new URI("http://google.com");
